@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      #          lower-case-service-id: true
+      mvc:
+        routes:
+          - id: admin
+            #            uri: http://localhost:8180
+            uri: lb://ADMIN-MICROSERVICE
+            predicates:
+              - Path=/hardware-store/api/admin/**
+          - id: auth
+            uri: lb://AUTH-MICROSERVICE
+            predicates:
+              - Path=/hardware-store/api/auth/**
+          - id: inventory
+            uri: lb://INVENTORY-MICROSERVICE
+            predicates:
+              - Path=/hardware-store/api/inventory/**
+          - id: report
+            uri: lb://REPORT-MICROSERVICE
+            predicates:
+              - Path=/hardware-store/api/report/**
+          - id: sales
+            uri: lb://SALES-MICROSERVICE
+            predicates:
+              - Path=/hardware-store/api/sales/**
+          - id: store
+            uri: lb://STORE-MICROSERVICE
+            predicates:
+              - Path=/hardware-store/api/store/**
+    loadbalancer:
+      ribbon:
+        enable: false
+
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${random.uuid}

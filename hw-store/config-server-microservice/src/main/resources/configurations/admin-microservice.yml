@@ -1,0 +1,35 @@
+server:
+  port: 8180
+  servlet:
+    context-path: /hardware-store/api/admin
+
+spring:
+  application:
+    name: admin-microservice
+  datasource:
+    url: jdbc:postgresql://localhost:5433/hardware_store_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+  data:
+    redis:
+      host: localhost
+      port: 6380
+
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${random.uuid}
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG
