@@ -5,9 +5,19 @@ spring:
     active: dev
   config:
     import: optional:configserver:http://localhost:8888
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+#    hibernate:
+#      ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+
 
 logging:
   level:
     org:
       springframework:
         security: DEBUG
+    web: debug
