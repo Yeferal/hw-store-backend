@@ -11,3 +11,5 @@ logging:
     org:
       springframework:
         security: DEBUG
+        data:
+          redis: DEBUG

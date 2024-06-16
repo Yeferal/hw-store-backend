@@ -5,9 +5,15 @@ spring:
     active: dev
   config:
     import: optional:configserver:http://localhost:8888
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-service/issuer
 
 logging:
   level:
     org:
       springframework:
         security: DEBUG
+

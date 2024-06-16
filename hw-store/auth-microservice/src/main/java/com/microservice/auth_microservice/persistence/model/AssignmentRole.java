@@ -22,11 +22,11 @@ public class AssignmentRole {
     private Long roleId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Role role;
 
 }

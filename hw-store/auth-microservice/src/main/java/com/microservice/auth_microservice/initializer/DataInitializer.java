@@ -11,6 +11,7 @@ import com.microservice.auth_microservice.persistence.model.UserProfile;
 import com.microservice.auth_microservice.source.utils.RoleType;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,62 +21,92 @@ import java.util.ArrayList;
 
 @Component
 public class DataInitializer {
+
     @Autowired
     private AccountCRUDRepository accountCRUDRepository;
-    @Autowired
-    private UserProfileCRUDRepository userProfileCRUDRepository;
     @Autowired
     private RoleCRUDRepository roleCRUDRepository;
     @Autowired
     private AssignmentRoleCRUDRepository assignmentRoleCRUDRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostConstruct
     @Transactional
     public void initData() {
-//        if (accountCRUDRepository.count() == 0) {
-            System.out.println("SALUDOS...HUMANO");
+        initRoles();
+        initUsers();
+    }
 
-//            Account account1 = Account.builder()
-//                    .username("admin")
-//                    .creationDate(LocalDateTime.now())
-//                    .password(passwordEncoder.encode("admin"))
-//                    .verified(true)
-//                    .active(true)
-//                    .build();
-//
-//            // Guardar la cuenta primero
-//            account1 = accountCRUDRepository.save(account1);
-//
-//            // Crear el perfil de usuario y asociarlo a la cuenta
-//            UserProfile userProfile1 = UserProfile.builder()
-////                    .id(account1.getId())
-//                    .accountId(account1.getId())
-//                    .firstName("NAME1")
-//                    .lastName("LAST1")
-//                    .account(account1)
-//                    .build();
-//
-//            // Establecer la relación bidireccional
-//            account1.setUserProfile(userProfile1);
-//
-//            // Guardar el perfil de usuario
-//            userProfile1 = userProfileCRUDRepository.save(userProfile1);
-//
-//            // Obteniendo roles
-//            Role roleAdmin = roleCRUDRepository.findByName(RoleType.ADMIN.name()).get();
-//            Role roleOperator = roleCRUDRepository.findByName(RoleType.OPERATOR.name()).get();
-//            Role roleReceptionist = roleCRUDRepository.findByName(RoleType.RECEPTIONIST.name()).get();
-//
-//            AssignmentRole assignmentRole1 = AssignmentRole.builder()
-//                    .accountId(account1.getId())
-//                    .roleId(roleAdmin.getId())
-////                    .account(account1)
-////                    .role(roleAdmin)
-//                    .build();
+    private void initRoles(){
+        if(roleCRUDRepository.count() == 0){
+            roleCRUDRepository.save(new Role(RoleType.ADMIN.name(), "Administador"));
+            roleCRUDRepository.save(new Role(RoleType.OPERATOR.name(), "Operador"));
+            roleCRUDRepository.save(new Role(RoleType.RECEPTIONIST.name(), "Recepcionista"));
+            roleCRUDRepository.save(new Role(RoleType.CLIENT.name(), "Cliente"));
+        }
+    }
 
-//            assignmentRoleCRUDRepository.save(assignmentRole1);
-//        }
+    private void initUsers(){
+        if(accountCRUDRepository.count() == 0){
+            Account account = Account.builder()
+                    .username("Admin")
+                    .creationDate(LocalDateTime.now())
+                    .password(passwordEncoder.encode("password"))
+                    .verified(true)
+                    .active(true)
+                    .build();
+
+            Account account2 = Account.builder()
+                    .username("recep")
+                    .creationDate(LocalDateTime.now())
+                    .password(passwordEncoder.encode("password"))
+                    .verified(true)
+                    .active(true)
+                    .build();
+
+            UserProfile userProfile = UserProfile.builder()
+                    .firstName("NAME1")
+                    .lastName("LAST1")
+                    .account(account)
+                    .build();
+
+            UserProfile userProfile2 = UserProfile.builder()
+                    .firstName("RecepName")
+                    .lastName("LAST_RECEP")
+                    .account(account2)
+                    .build();
+
+            account.setUserProfile(userProfile);
+            account2.setUserProfile(userProfile2);
+
+            account = accountCRUDRepository.save(account);
+            account2 = accountCRUDRepository.save(account2);
+
+            Role roleAdmin = roleCRUDRepository.findByName(RoleType.ADMIN.name()).orElseThrow(() -> new RuntimeException("Role not found"));;
+            Role roleOperator = roleCRUDRepository.findByName(RoleType.OPERATOR.name()).orElseThrow(() -> new RuntimeException("Role not found"));;
+            Role roleReceptionist = roleCRUDRepository.findByName(RoleType.RECEPTIONIST.name()).orElseThrow(() -> new RuntimeException("Role not found"));;
+
+            AssignmentRole assignmentRole = AssignmentRole.builder()
+                    .accountId(account.getId())
+                    .roleId(roleAdmin.getId())
+                    .build();
+
+            AssignmentRole assignmentRole2 = AssignmentRole.builder()
+                    .accountId(account.getId())
+                    .roleId(roleOperator.getId())
+                    .build();
+
+            AssignmentRole assignmentRole3 = AssignmentRole.builder()
+                    .accountId(account2.getId())
+                    .roleId(roleReceptionist.getId())
+                    .build();
+
+            assignmentRoleCRUDRepository.save(assignmentRole);
+            assignmentRoleCRUDRepository.save(assignmentRole2);
+            assignmentRoleCRUDRepository.save(assignmentRole3);
+        }
+
     }
 }
