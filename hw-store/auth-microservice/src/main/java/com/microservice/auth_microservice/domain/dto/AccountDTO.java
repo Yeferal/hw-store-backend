@@ -13,8 +13,8 @@ import java.io.Serializable;
 public class AccountDTO implements Serializable {
     @NotNull
     Long id;
-    @NotNull(message = "No puede ser Nullo")
-    @NotBlank(message = "No puede contener espacios en blanco")
+    @NotNull(message = "El campo username no puede ser Nulo")
+    @NotBlank(message = "El campo username no puede ser Vacio")
     String username;
     @NotNull
     Boolean verified;

@@ -1,4 +1,4 @@
-package com.microservice.admin_microservice.persistence.model;
+package com.microservice.inventory_microservice.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +21,6 @@ public class Product {
     @Column(name = "id", nullable = false)
     private Long id;
 
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "code", nullable = false)
     private String code;
 

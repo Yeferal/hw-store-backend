@@ -21,13 +21,13 @@ public class AuthenticatedBodyDTO implements Serializable {
      * el campo no esté completamente vacío.
      * */
 
-    @NotNull(message = "No puede ser Nullo")
-    @NotBlank(message = "No puede contener espacios en blanco")
-    @NotEmpty(message = "No puede ser vacio")
+    @NotNull(message = "El campo username no puede ser Nulo")
+    @NotBlank(message = "El campo username no puede tener espacio en blanco")
+    @NotEmpty(message = "El campo username no puede ser Vacio")
     String username;
 
-    @NotNull(message = "No puede ser Nullo")
-    @NotBlank(message = "No puede contener espacios en blanco")
-    @NotEmpty(message = "No puede ser vacio")
+    @NotNull(message = "El campo password no puede ser Nulo")
+    @NotBlank(message = "El campo password no puede tener espacio en blanco")
+    @NotEmpty(message = "El campo password no puede ser Vacio")
     String password;
 }
