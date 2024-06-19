@@ -1,4 +1,4 @@
-package com.microservice.admin_microservice.persistence.model;
+package com.microservice.inventory_microservice.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;

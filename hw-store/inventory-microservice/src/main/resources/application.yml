@@ -5,6 +5,9 @@ spring:
     active: dev
   config:
     import: optional:configserver:http://localhost:8888
+#  web:
+#    resources:
+#      static-locations: classpath:/static/,file:./inventory-service/src/main/resources/static/
 
 logging:
   level:

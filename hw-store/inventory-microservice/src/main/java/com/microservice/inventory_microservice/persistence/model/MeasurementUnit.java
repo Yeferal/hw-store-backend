@@ -3,6 +3,8 @@ package com.microservice.inventory_microservice.persistence.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,5 +29,8 @@ public class MeasurementUnit {
 
     @Column(name = "magnitude", nullable = true)
     private String magnitude;
+
+    @OneToMany(mappedBy = "measurementUnit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AssignmentMeasure> assignmentMeasureList;
 
 }

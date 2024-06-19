@@ -86,8 +86,10 @@ public class Product {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    @ManyToOne
-    @JoinColumn(name = "measurement_unit_id", nullable = false)
-    private MeasurementUnit measurementUnit;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AssignmentMeasure> assignmentMeasureList;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AssignmentCategory> assignmentCategoryList;
 
 }

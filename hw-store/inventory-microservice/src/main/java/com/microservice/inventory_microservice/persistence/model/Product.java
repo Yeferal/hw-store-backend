@@ -21,6 +21,7 @@ public class Product {
     @Column(name = "id", nullable = false)
     private Long id;
 
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "code", nullable = false)
     private String code;
 
@@ -37,12 +38,14 @@ public class Product {
     private BigDecimal wholesalePrice; // Precio al mayorista
 
     @Column(name = "previous_price", nullable = false, precision = 20, scale = 2)
+    @ColumnDefault("0.00")
     private BigDecimal previous_price; // Precio anterior
 
     @Column(name = "discount", nullable = false, precision = 20, scale = 2)
+    @ColumnDefault("0.00")
     private BigDecimal discount; // Descuento
 
-    @Column(name = "discount_type ", nullable = false)
+    @Column(name = "discount_type ", nullable = true)
     private String discountType ; // Tipo de descuento (% o Fijo)
 
     @Column(name = "amount", nullable = false, precision = 10, scale = 4)
@@ -55,7 +58,7 @@ public class Product {
     @Column(name = "purchase_price", nullable = false, precision = 20, scale = 2)
     private BigDecimal purchasePrice;
 
-    @Column(name = "delivery", nullable = true)
+    @Column(name = "delivery", nullable = false)
     @ColumnDefault("false")
     private Boolean delivery; //Cambiarlo a los productos que son deliveri en una tabla
 
@@ -82,11 +85,13 @@ public class Product {
     private List<ProductImage> images;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)
+    @JoinColumn(name = "brand_id", nullable = true)
     private Brand brand;
 
-    @ManyToOne
-    @JoinColumn(name = "measurement_unit_id", nullable = false)
-    private MeasurementUnit measurementUnit;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AssignmentMeasure> assignmentMeasureList;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AssignmentCategory> assignmentCategoryList;
 
 }

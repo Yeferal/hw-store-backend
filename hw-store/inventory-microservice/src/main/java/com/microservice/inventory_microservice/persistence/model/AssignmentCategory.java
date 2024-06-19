@@ -1,6 +1,6 @@
-package com.microservice.admin_microservice.persistence.model;
+package com.microservice.inventory_microservice.persistence.model;
 
-import com.microservice.admin_microservice.persistence.model.composite.AssignmentCategoryId;
+import com.microservice.inventory_microservice.persistence.model.composite.AssignmentCategoryId;
 import jakarta.persistence.*;
 import lombok.*;
 

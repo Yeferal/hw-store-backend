@@ -37,9 +37,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     //Mecanismo para invocar el siguiente filtro en la siguiente cadena de filtros
                                     FilterChain filterChain) throws ServletException, IOException {
         String requestUri = request.getRequestURI();
-        if (requestUri.startsWith("/hardware-store/api/swagger-ui.html") || requestUri.startsWith("/hardware-store/api/swagger-ui") ||
-                requestUri.startsWith("/hardware-store/api/v3/api-docs") || requestUri.startsWith("/hardware-store/api/swagger-resources") ||
-                requestUri.startsWith("/hardware-store/api/webjars")) {
+        if (requestUri.startsWith("/hardware-store/api/inventory/api/swagger-ui.html") || requestUri.startsWith("/hardware-store/api/inventory/api/swagger-ui") ||
+                requestUri.startsWith("/hardware-store/api/inventory/api/v3/api-docs") || requestUri.startsWith("/hardware-store/api/inventory/api/swagger-resources") ||
+                requestUri.startsWith("/hardware-store/api/inventory/api/webjars") || requestUri.startsWith("/hardware-store/api/inventory/images")) {
             filterChain.doFilter(request, response);
             return;
         }
