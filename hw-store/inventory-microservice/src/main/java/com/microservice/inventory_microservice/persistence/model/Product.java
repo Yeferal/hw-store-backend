@@ -21,7 +21,6 @@ public class Product {
     @Column(name = "id", nullable = false)
     private Long id;
 
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "code", nullable = false)
     private String code;
 
@@ -31,7 +30,7 @@ public class Product {
     @Column(name = "description", nullable = true, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "retail price", nullable = false, precision = 20, scale = 2)
+    @Column(name = "retail_price", nullable = false, precision = 20, scale = 2)
     private BigDecimal retailPrice; // Precio al Detal o minorista, o comsumidor
 
     @Column(name = "wholesale_price", nullable = false, precision = 20, scale = 2)
@@ -41,7 +40,7 @@ public class Product {
     @ColumnDefault("0.00")
     private BigDecimal previous_price; // Precio anterior
 
-    @Column(name = "discount", nullable = false, precision = 20, scale = 2)
+    @Column(name = "discount", precision = 20, scale = 2)
     @ColumnDefault("0.00")
     private BigDecimal discount; // Descuento
 
@@ -51,30 +50,31 @@ public class Product {
     @Column(name = "amount", nullable = false, precision = 10, scale = 4)
     private BigDecimal amount;
 
-    @Column(name = "min_amount", nullable = false, precision = 10, scale = 4)
+    @Column(name = "min_amount", precision = 10, scale = 4)
     @ColumnDefault("0.00")
     private BigDecimal minAmount;
 
     @Column(name = "purchase_price", nullable = false, precision = 20, scale = 2)
     private BigDecimal purchasePrice;
 
-    @Column(name = "delivery", nullable = false)
+    @Column(name = "delivery")
     @ColumnDefault("false")
     private Boolean delivery; //Cambiarlo a los productos que son deliveri en una tabla
 
-    @Column(name = "delivery_price", nullable = false, precision = 20, scale = 2)
+    @Column(name = "delivery_price", precision = 20, scale = 2)
     @ColumnDefault("0.00")
     private BigDecimal deliveryPrice;
 
-    @Column(name = "formula", nullable = false)
+    @Column(name = "formula")
     @ColumnDefault("false")
     private Boolean formula; // Para calcular el total de costo-inversion del producto (Expense), y asi se calcula para deterninar el precio del mismo
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active")
     @ColumnDefault("true")
     private Boolean active; // Si el producto es activo o no
 
     @Column(name = "creation_date", nullable = false)
+    @ColumnDefault("now()")
     private LocalDateTime creationDate; // Fecha de creation
 
     @ManyToOne(fetch = FetchType.LAZY)

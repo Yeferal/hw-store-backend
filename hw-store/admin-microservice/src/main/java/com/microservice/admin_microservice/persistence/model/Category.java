@@ -26,7 +26,7 @@ public class Category {
     @Column(name = "description", nullable = true, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "destacado", nullable = false)
+    @Column(name = "featured", nullable = false)
     @ColumnDefault("false")
     private Boolean featured; // Si la categoria es destacada o no
 

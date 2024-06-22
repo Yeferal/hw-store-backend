@@ -22,3 +22,10 @@ eureka:
   instance:
     hostname: localhost
     instance-id: ${spring.application.name}:${random.uuid}
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+    web: debug

@@ -7,7 +7,7 @@ import com.microservice.admin_microservice.domain.map.AccountMapper;
 import com.microservice.admin_microservice.domain.repository.AccountRepository;
 import com.microservice.admin_microservice.domain.repository.UserProfileRepository;
 import com.microservice.admin_microservice.domain.service.AccountService;
-import com.microservice.admin_microservice.domain.spec.AccountSpecifications;
+import com.microservice.admin_microservice.domain.specs.AccountSpecifications;
 import com.microservice.admin_microservice.persistence.model.Account;
 import com.microservice.admin_microservice.persistence.model.AssignmentRole;
 import com.microservice.admin_microservice.persistence.model.UserProfile;

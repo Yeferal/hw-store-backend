@@ -1,15 +1,23 @@
 package com.microservice.inventory_microservice.persistence.prepository;
 
+import com.microservice.inventory_microservice.domain.dto.ProductDefaultDTO;
 import com.microservice.inventory_microservice.domain.repository.ProductRepository;
 import com.microservice.inventory_microservice.persistence.crud.*;
 import com.microservice.inventory_microservice.persistence.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public class ProductPRepository implements ProductRepository {
     @Autowired
     private ProductCRUDRepository productCRUDRepository;
+    @Autowired
+    private ProductImageCRUDRepository productImageCRUDRepository;
     @Autowired
     private BrandCRUDRepository brandCRUDRepository;
     @Autowired
@@ -69,6 +77,31 @@ public class ProductPRepository implements ProductRepository {
     @Override
     public boolean isExistedMeasurementUnit(String name) {
         return measurementUnitCRUDRepository.existsByName(name);
+    }
+
+    @Override
+    public Optional<Category> getCategoryById(Long id) {
+        return categoryCRUDRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Brand> getBrandById(Long id) {
+        return brandCRUDRepository.findById(id);
+    }
+
+    @Override
+    public Optional<MeasurementUnit> getMeasureUnitById(Long id) {
+        return measurementUnitCRUDRepository.findById(id);
+    }
+
+    @Override
+    public ProductImage createProductImage(ProductImage productImage) {
+        return productImageCRUDRepository.save(productImage);
+    }
+
+    @Override
+    public Page<Product> getAllProductPaginateAndSort(Specification<Product> specs, Pageable pageable) {
+        return productCRUDRepository.findAll(specs, pageable);
     }
 
 }

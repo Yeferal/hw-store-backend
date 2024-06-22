@@ -43,6 +43,8 @@ public class SecurityConfig { //Indicamos que se activa la seguridad web en nues
                         .requestMatchers(HttpMethod.POST, "/v1/products").hasAnyAuthority("ADMIN", "OPERATOR")
                         .requestMatchers(HttpMethod.PUT, "/v1/products").hasAnyAuthority("ADMIN", "OPERATOR")
                         .requestMatchers(HttpMethod.DELETE, "/v1/products").hasAnyAuthority("ADMIN", "OPERATOR")
+                        .requestMatchers(HttpMethod.GET, "/v1/products/**").hasAnyAuthority("ADMIN", "OPERATOR")
+                        .requestMatchers(HttpMethod.POST, "/v1/products/**").hasAnyAuthority("ADMIN", "OPERATOR")
 
 
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()

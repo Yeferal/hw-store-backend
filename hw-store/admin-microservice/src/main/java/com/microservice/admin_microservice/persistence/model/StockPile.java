@@ -25,8 +25,8 @@ public class StockPile {
     @Column(name = "purchase_price", nullable = false, precision = 20, scale = 2)
     private BigDecimal purchasePrice; // Precio de Compra
 
-    @Column(name = "sale_price", nullable = false, precision = 20, scale = 2)
-    private BigDecimal salePrice; // Precio de Venta
+//    @Column(name = "sale_price", nullable = false, precision = 20, scale = 2)
+//    private BigDecimal salePrice; // Precio de Venta
 
     @Column(name = "active", nullable = false)
     @ColumnDefault("true")

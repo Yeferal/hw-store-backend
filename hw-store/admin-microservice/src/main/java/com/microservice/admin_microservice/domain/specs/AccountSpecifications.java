@@ -1,4 +1,4 @@
-package com.microservice.admin_microservice.domain.spec;
+package com.microservice.admin_microservice.domain.specs;
 
 import com.microservice.admin_microservice.persistence.model.Account;
 import org.springframework.data.jpa.domain.Specification;

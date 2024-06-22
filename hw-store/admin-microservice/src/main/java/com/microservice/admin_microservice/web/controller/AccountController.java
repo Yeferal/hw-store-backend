@@ -28,7 +28,7 @@ public class AccountController {
             @RequestParam(defaultValue = "username") String sortField,
             @RequestParam(required = false) String searchValue
     ) {
-        PaginateAndSortDTO paginateAndSortDTO = new PaginateAndSortDTO(page, size, sortOrder, sortField, searchValue);
+            PaginateAndSortDTO paginateAndSortDTO = new PaginateAndSortDTO(page, size, sortOrder, sortField, searchValue);
         Page<AccountDTO> accounts = accountService.getAllAccounts(paginateAndSortDTO);
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }

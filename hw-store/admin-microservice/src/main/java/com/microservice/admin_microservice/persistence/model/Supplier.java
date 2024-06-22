@@ -31,6 +31,6 @@ public class Supplier {
     private String tel2;
 
     @OneToMany(mappedBy = "supplier")
-    private List<IncomeProduct> incomeProducts;
+    private List<ProductIncome> incomeProducts;
 
 }

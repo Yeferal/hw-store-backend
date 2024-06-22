@@ -31,8 +31,8 @@ public class Purchase {
     private BigDecimal subtotal;
 
     @ManyToOne
-    @JoinColumn(name = "income_product_id")
-    private IncomeProduct incomeProduct;
+    @JoinColumn(name = "product_income_id")
+    private ProductIncome productIncome;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

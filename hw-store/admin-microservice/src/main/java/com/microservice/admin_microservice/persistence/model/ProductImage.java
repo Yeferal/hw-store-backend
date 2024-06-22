@@ -1,11 +1,13 @@
 package com.microservice.admin_microservice.persistence.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "product_images")
 public class ProductImage {
@@ -14,7 +16,7 @@ public class ProductImage {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "image_path", nullable = true, columnDefinition = "TEXT")
+    @Column(name = "image_path", nullable = false, columnDefinition = "TEXT")
     private String imagePath; // Ruta de la imagen
 
     @ManyToOne(fetch = FetchType.LAZY)

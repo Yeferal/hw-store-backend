@@ -38,7 +38,7 @@ public class ProductDefaultDTO implements Serializable {
     Boolean formula;
     Boolean active;
     LocalDateTime creationDate;
-    AccountDTO creator;
+    AccountMinimalDTO creator;
     List<ProductImageDTO> images;
     BrandDTO brand;
     List<AssignmentMeasureDTO> assignmentMeasureList;
