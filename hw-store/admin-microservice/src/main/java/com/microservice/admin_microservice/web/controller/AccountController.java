@@ -28,9 +28,13 @@ public class AccountController {
             @RequestParam(defaultValue = "username") String sortField,
             @RequestParam(required = false) String searchValue
     ) {
+        try {
             PaginateAndSortDTO paginateAndSortDTO = new PaginateAndSortDTO(page, size, sortOrder, sortField, searchValue);
-        Page<AccountDTO> accounts = accountService.getAllAccounts(paginateAndSortDTO);
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+            Page<AccountDTO> accounts = accountService.getAllAccounts(paginateAndSortDTO);
+            return new ResponseEntity<>(accounts, HttpStatus.OK);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // Create account

@@ -1,8 +1,7 @@
-package com.microservice.admin_microservice.persistence.model;
+package com.microservice.sales_microservice.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 
@@ -12,8 +11,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "sale_sub_details")
-public class SaleSubDetail {
+@Table(name = "sale_details")
+public class SaleDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,26 +27,12 @@ public class SaleSubDetail {
     @Column(name = "unit_price", nullable = false, precision = 20, scale = 2)
     private BigDecimal unitPrice;
 
-    @Column(name = "purchase_price", nullable = false, precision = 20, scale = 2)
-    private BigDecimal pruchasePrice;
-
-    @Column(name = "sale_price", nullable = true, precision = 20, scale = 2)
-    private BigDecimal salePrice;
-
     @Column(name = "subtotal", nullable = false, precision = 20, scale = 2)
     private BigDecimal subtotal;
 
-    @Column(name = "first_week", nullable = false)
-    @ColumnDefault("false")
-    private Boolean firstWeek;
-
-    @Column(name = "tithe", nullable = false, precision = 10, scale = 2)
-    @ColumnDefault("0.00")
-    private BigDecimal tithe;
-
     @ManyToOne
-    @JoinColumn(name = "sale_detail_id")
-    private SaleDetail saleDetail;
+    @JoinColumn(name = "sale_id")
+    private Sale sale;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

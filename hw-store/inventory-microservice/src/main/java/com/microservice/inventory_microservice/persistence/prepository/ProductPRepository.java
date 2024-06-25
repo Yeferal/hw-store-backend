@@ -35,6 +35,11 @@ public class ProductPRepository implements ProductRepository {
     }
 
     @Override
+    public Product updateProduct(Product product) {
+        return productCRUDRepository.save(product);
+    }
+
+    @Override
     public Brand createBrand(Brand brand) {
         return brandCRUDRepository.save(brand);
     }
@@ -77,6 +82,11 @@ public class ProductPRepository implements ProductRepository {
     @Override
     public boolean isExistedMeasurementUnit(String name) {
         return measurementUnitCRUDRepository.existsByName(name);
+    }
+
+    @Override
+    public Optional<Product> getProductById(Long id) {
+        return productCRUDRepository.findById(id);
     }
 
     @Override

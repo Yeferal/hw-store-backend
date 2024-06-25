@@ -1,4 +1,4 @@
-package com.microservice.admin_microservice.persistence.model;
+package com.microservice.sales_microservice.persistence.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,16 +26,16 @@ public class SaleSubDetail {
     private String description;
 
     @Column(name = "unit_price", nullable = false, precision = 20, scale = 2)
-    private BigDecimal unitPrice;
+    private BigDecimal unitPrice; // Precio unitario al que se vendio
 
     @Column(name = "purchase_price", nullable = false, precision = 20, scale = 2)
-    private BigDecimal pruchasePrice;
+    private BigDecimal pruchasePrice; // Precio de compra unitario
 
     @Column(name = "sale_price", nullable = true, precision = 20, scale = 2)
-    private BigDecimal salePrice;
+    private BigDecimal salePrice; // SubTotal al que se vendio
 
     @Column(name = "subtotal", nullable = false, precision = 20, scale = 2)
-    private BigDecimal subtotal;
+    private BigDecimal subtotal; // Subtotal al que se compro
 
     @Column(name = "first_week", nullable = false)
     @ColumnDefault("false")

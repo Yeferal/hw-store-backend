@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface ProductRepository {
 
     Product createProduct(Product product);
+    Product updateProduct(Product product);
     Brand createBrand(Brand brand);
     Category createCategory(Category category);
     MeasurementUnit createMeasurementUnit(MeasurementUnit measurementUnit);
@@ -20,6 +21,7 @@ public interface ProductRepository {
     boolean isExistedBrand(String name);
     boolean isExistedCategory(String name);
     boolean isExistedMeasurementUnit(String name);
+    Optional<Product> getProductById(Long id);
     Optional<Category> getCategoryById(Long id);
     Optional<Brand> getBrandById(Long id);
     Optional<MeasurementUnit> getMeasureUnitById(Long id);

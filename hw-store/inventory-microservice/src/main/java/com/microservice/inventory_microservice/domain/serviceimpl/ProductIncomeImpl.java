@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductIncomeImpl implements ProductIncomeService {
@@ -88,15 +89,23 @@ public class ProductIncomeImpl implements ProductIncomeService {
         for (PurchaseBodyDTO purchaseBodyDTO : purchaseBodyDTOList) {
             BigDecimal amount = purchaseBodyDTO.getAmount();
             BigDecimal unitPrice = purchaseBodyDTO.getUnitPrice();
+            Product product = productRepository.getProductById(purchaseBodyDTO.getProductId()).orElseThrow(
+                    () -> new RegisterNotFoundException("Product with id <"+ purchaseBodyDTO.getProductId() +"> does not exist")
+            );
+
+            product.setPurchasePrice(unitPrice);
+
             Purchase purchase = Purchase.builder()
-                    .product(Product.builder().id(purchaseBodyDTO.getProductId()).build())
+                    .product(product)
                     .amount(amount)
                     .unitPrice(unitPrice)
                     .subtotal(amount.multiply(unitPrice))
                     .description(purchaseBodyDTO.getDescription())
                     .productIncome(productIncome)
                     .build();
+
             purchase = productIncomeRepository.createPurchase(purchase);
+            productRepository.updateProduct(product);
             if (purchase == null) {
                 throw new FailedRegisterException("Purchase failed");
             }

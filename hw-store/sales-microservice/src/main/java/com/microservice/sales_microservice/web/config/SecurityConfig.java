@@ -38,10 +38,8 @@ public class SecurityConfig { //Indicamos que se activa la seguridad web en nues
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint)) //Permitimos el manejo de excepciones. Nos establece un punto de entrada personalizado de autenticación para el manejo de autenticaciones no autorizadas
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/v1/accounts/test").hasAnyAuthority("ADMIN", "OPERATOR")
-                        .requestMatchers(HttpMethod.GET, "/v1/accounts").hasAnyAuthority("RECEPTIONIST")
-                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/sales/**").hasAnyAuthority("ADMIN", "OPERATOR")
+                        .requestMatchers(HttpMethod.POST, "/v1/sales/**").hasAnyAuthority("ADMIN", "OPERATOR")
 
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()) //Toda petición http debe ser autorizada
