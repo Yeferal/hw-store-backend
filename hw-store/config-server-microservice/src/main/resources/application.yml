@@ -17,3 +17,4 @@ spring:
 #    web:
 #      exposure:
 #        include: "*"
+# http://localhost:13573/hardware-store/api/swagger-ui/index.html#/user-controller
