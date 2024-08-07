@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -36,6 +38,14 @@ public class ProductPRepository implements ProductRepository {
 
     @Override
     public Product updateProduct(Product product) {
+        return productCRUDRepository.save(product);
+    }
+
+    @Override
+    public Product updateStock(Long productId, BigDecimal amount) {
+        Product product = productCRUDRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        product.setAmount(amount);
         return productCRUDRepository.save(product);
     }
 
@@ -90,6 +100,11 @@ public class ProductPRepository implements ProductRepository {
     }
 
     @Override
+    public Optional<Product> getProductByCode(String code) {
+        return productCRUDRepository.findByCode(code);
+    }
+
+    @Override
     public Optional<Category> getCategoryById(Long id) {
         return categoryCRUDRepository.findById(id);
     }
@@ -112,6 +127,36 @@ public class ProductPRepository implements ProductRepository {
     @Override
     public Page<Product> getAllProductPaginateAndSort(Specification<Product> specs, Pageable pageable) {
         return productCRUDRepository.findAll(specs, pageable);
+    }
+
+    @Override
+    public Page<Brand> getAllBrandPaginateAndSort(Specification<Brand> specs, Pageable pageable) {
+        return brandCRUDRepository.findAll(specs, pageable);
+    }
+
+    @Override
+    public List<Brand> getAllBrands() {
+        return brandCRUDRepository.findAll();
+    }
+
+    @Override
+    public Page<Category> getAllCategoryPaginateAndSort(Specification<Category> specs, Pageable pageable) {
+        return categoryCRUDRepository.findAll(specs, pageable);
+    }
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryCRUDRepository.findAll();
+    }
+
+    @Override
+    public Page<MeasurementUnit> getAllMeasurementUnitPaginateAndSort(Specification<MeasurementUnit> specs, Pageable pageable) {
+        return measurementUnitCRUDRepository.findAll(specs, pageable);
+    }
+
+    @Override
+    public List<MeasurementUnit> getAllMeasurementUnits() {
+        return measurementUnitCRUDRepository.findAll();
     }
 
 }

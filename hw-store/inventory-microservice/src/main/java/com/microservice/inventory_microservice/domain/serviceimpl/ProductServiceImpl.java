@@ -5,6 +5,9 @@ import com.microservice.inventory_microservice.domain.map.*;
 import com.microservice.inventory_microservice.domain.repository.AccountRepository;
 import com.microservice.inventory_microservice.domain.repository.ProductRepository;
 import com.microservice.inventory_microservice.domain.service.ProductService;
+import com.microservice.inventory_microservice.domain.specs.BrandSpecifications;
+import com.microservice.inventory_microservice.domain.specs.CategorySpecifications;
+import com.microservice.inventory_microservice.domain.specs.MeasurementUnitSpecifications;
 import com.microservice.inventory_microservice.domain.specs.ProductSpecifications;
 import com.microservice.inventory_microservice.persistence.model.*;
 import com.microservice.inventory_microservice.source.exception.ExistRegisterException;
@@ -29,6 +32,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -79,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
                     .description(productBodyDTO.getDescription())
                     .retailPrice(productBodyDTO.getRetailPrice())
                     .wholesalePrice(productBodyDTO.getWholesalePrice())
-                    .previous_price(productBodyDTO.getPrevious_price())
+                    .previousPrice(productBodyDTO.getPreviousPrice())
                     .discount(productBodyDTO.getDiscount())
                     .discountType(productBodyDTO.getDiscountType())
                     .amount(productBodyDTO.getAmount())
@@ -140,6 +144,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDefaultDTO getProduct(Long id) {
+        Optional<Product> product = productRepository.getProductById(id);
+        return product.map(value -> productDefaultMapper.toDto(value)).orElse(null);
+    }
+
+    @Override
+    public ProductDefaultDTO getProductByCode(String code) {
+        Optional<Product> product = productRepository.getProductByCode(code);
+        return product.map(value -> productDefaultMapper.toDto(value)).orElse(null);
+    }
+
+    @Override
     public Page<ProductDefaultDTO> getAllProducts(PaginateAndSortDTO paginateAndSortDTO) {
         Sort sort = Sort.by(Sort.Direction.ASC, paginateAndSortDTO.getSortField());
         if (paginateAndSortDTO.getSortOrder().equals("DESC")) {
@@ -149,7 +165,7 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(paginateAndSortDTO.getPage(), paginateAndSortDTO.getSize(), sort);
         Specification<Product> specs = Specification.where(null);
 
-        if (paginateAndSortDTO.getSearchValue() != null) {
+        if (paginateAndSortDTO.getSearchValue() != null && !paginateAndSortDTO.getSearchValue().isEmpty()){
             specs = specs.or(ProductSpecifications.codeContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
             specs = specs.or(ProductSpecifications.nameContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
             specs = specs.or(ProductSpecifications.brandNameContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
@@ -188,6 +204,37 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<BrandDTO> getBrands(PaginateAndSortDTO paginateAndSortDTO) {
+        Sort sort = Sort.by(Sort.Direction.ASC, paginateAndSortDTO.getSortField());
+        if (paginateAndSortDTO.getSortOrder().equals("DESC")) {
+            sort = Sort.by(Sort.Direction.DESC, paginateAndSortDTO.getSortField());
+        }
+
+        Pageable pageable = PageRequest.of(paginateAndSortDTO.getPage(), paginateAndSortDTO.getSize(), sort);
+        Specification<Brand> specs = Specification.where(null);
+
+        if (paginateAndSortDTO.getSearchValue() != null && !paginateAndSortDTO.getSearchValue().isEmpty()){
+            specs = specs.or(BrandSpecifications.idContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+            specs = specs.or(BrandSpecifications.nameContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+            specs = specs.or(BrandSpecifications.isActive(true));
+            specs = specs.or(BrandSpecifications.abbreviationContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+        }
+        Page<Brand> brandPage = productRepository.getAllBrandPaginateAndSort(specs, pageable);
+        List<BrandDTO> brandDefaultDTOs = brandPage.getContent().stream()
+                .map(brandMapper::toDto)
+                .toList();
+        return new PageImpl<>(brandDefaultDTOs, pageable, brandPage.getTotalElements());
+    }
+
+    @Override
+    public List<BrandDTO> getAllBrands() {
+        List<Brand> brands = productRepository.getAllBrands();
+        return brands.stream()
+                .map(brandMapper::toDto)
+                .toList();
+    }
+
+    @Override
     public CategoryDTO addCategory(CategoryBodyDTO categoryBodyDTO) {
         if (productRepository.isExistedCategory(categoryBodyDTO.getName())) {
             throw new ExistRegisterException("Category with name " + categoryBodyDTO.getName() + " already exists");
@@ -213,6 +260,39 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<CategoryDTO> getCategories(PaginateAndSortDTO paginateAndSortDTO) {
+        Sort sort = Sort.by(Sort.Direction.ASC, paginateAndSortDTO.getSortField());
+        if (paginateAndSortDTO.getSortOrder().equals("DESC")) {
+            sort = Sort.by(Sort.Direction.DESC, paginateAndSortDTO.getSortField());
+        }
+
+        Pageable pageable = PageRequest.of(paginateAndSortDTO.getPage(), paginateAndSortDTO.getSize(), sort);
+        Specification<Category> specs = Specification.where(null);
+
+        if (paginateAndSortDTO.getSearchValue() != null && !paginateAndSortDTO.getSearchValue().isEmpty()){
+            specs = specs.or(CategorySpecifications.idContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+            specs = specs.or(CategorySpecifications.nameContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+//            specs = specs.or(CategorySpecifications.isFeatured(t);
+            specs = specs.or(CategorySpecifications.isActive(true));
+            specs = specs.or(CategorySpecifications.abbreviationContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+        }
+
+        Page<Category> categoryPage = productRepository.getAllCategoryPaginateAndSort(specs, pageable);
+        List<CategoryDTO> categoryDTOs = categoryPage.getContent().stream()
+                .map(categoryMapper::toDto)
+                .toList();
+        return new PageImpl<>(categoryDTOs, pageable, categoryPage.getTotalElements());
+    }
+
+    @Override
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> categories = productRepository.getAllCategories();
+        return categories.stream()
+                .map(categoryMapper::toDto)
+                .toList();
+    }
+
+    @Override
     public MeasurementUnitDTO addMeasurementUnit(MeasurementUnitBodyDTO measurementUnitBodyDTO) {
         if (productRepository.isExistedMeasurementUnit(measurementUnitBodyDTO.getName())) {
             throw new ExistRegisterException("Measurement unit with name " + measurementUnitBodyDTO.getName() + " already exists");
@@ -227,6 +307,39 @@ public class ProductServiceImpl implements ProductService {
 
         measurementUnit = productRepository.createMeasurementUnit(measurementUnit);
         return measurementUnitMapper.toDto(measurementUnit);
+    }
+
+    @Override
+    public Page<MeasurementUnitDTO> getMeasurementUnits(PaginateAndSortDTO paginateAndSortDTO) {
+        Sort sort = Sort.by(Sort.Direction.ASC, paginateAndSortDTO.getSortField());
+        if (paginateAndSortDTO.getSortOrder().equals("DESC")) {
+            sort = Sort.by(Sort.Direction.DESC, paginateAndSortDTO.getSortField());
+        }
+
+        Pageable pageable = PageRequest.of(paginateAndSortDTO.getPage(), paginateAndSortDTO.getSize(), sort);
+        Specification<MeasurementUnit> specs = Specification.where(null);
+
+        if (paginateAndSortDTO.getSearchValue() != null && !paginateAndSortDTO.getSearchValue().isEmpty()){
+            specs = specs.or(MeasurementUnitSpecifications.idContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+            specs = specs.or(MeasurementUnitSpecifications.nameContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+            specs = specs.or(MeasurementUnitSpecifications.symbolContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+            specs = specs.or(MeasurementUnitSpecifications.abbreviationContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+            specs = specs.or(MeasurementUnitSpecifications.magnitudeContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
+        }
+
+        Page<MeasurementUnit> measurementUnitPage = productRepository.getAllMeasurementUnitPaginateAndSort(specs, pageable);
+        List<MeasurementUnitDTO> categoryDTOs = measurementUnitPage.getContent().stream()
+                .map(measurementUnitMapper::toDto)
+                .toList();
+        return new PageImpl<>(categoryDTOs, pageable, measurementUnitPage.getTotalElements());
+    }
+
+    @Override
+    public List<MeasurementUnitDTO> getAllMeasurementUnits() {
+        List<MeasurementUnit> measurementsUnit = productRepository.getAllMeasurementUnits();
+        return measurementsUnit.stream()
+                .map(measurementUnitMapper::toDto)
+                .toList();
     }
 
 }

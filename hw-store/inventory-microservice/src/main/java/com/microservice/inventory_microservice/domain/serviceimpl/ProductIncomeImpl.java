@@ -4,10 +4,7 @@ import com.microservice.inventory_microservice.domain.dto.ProductIncomeBodyDTO;
 import com.microservice.inventory_microservice.domain.dto.ProductIncomeDTO;
 import com.microservice.inventory_microservice.domain.dto.PurchaseBodyDTO;
 import com.microservice.inventory_microservice.domain.map.ProductIncomeMapper;
-import com.microservice.inventory_microservice.domain.repository.AccountRepository;
-import com.microservice.inventory_microservice.domain.repository.ProductIncomeRepository;
-import com.microservice.inventory_microservice.domain.repository.ProductRepository;
-import com.microservice.inventory_microservice.domain.repository.SupplierRepository;
+import com.microservice.inventory_microservice.domain.repository.*;
 import com.microservice.inventory_microservice.domain.service.ProductIncomeService;
 import com.microservice.inventory_microservice.persistence.model.*;
 import com.microservice.inventory_microservice.source.exception.FailedRegisterException;
@@ -32,6 +29,8 @@ public class ProductIncomeImpl implements ProductIncomeService {
     private ProductIncomeRepository productIncomeRepository;
     @Autowired
     private SupplierRepository supplierRepository;
+    @Autowired
+    private StockPileRepository stockPileRepository;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -127,6 +126,10 @@ public class ProductIncomeImpl implements ProductIncomeService {
             if (stockPile == null) {
                 throw new FailedRegisterException("StockPile failed");
             }
+
+            // Actualizar stock del producto hacer conteo
+            BigDecimal totalAmount = stockPileRepository.sumTotalStockPile(purchase.getProduct().getId());
+            productRepository.updateStock(purchase.getProduct().getId(), totalAmount);
         }
     }
 

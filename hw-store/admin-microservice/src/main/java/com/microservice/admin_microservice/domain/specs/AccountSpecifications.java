@@ -9,7 +9,7 @@ public class AccountSpecifications {
 
     // ACCOUNT
     public static Specification<Account> usernameContains(String username) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("username"), "%" + username + "%");
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.upper(root.get("username")), "%" + username + "%");
     }
 
     public static Specification<Account> creationDateBetween(Date startDate, Date endDate) {
@@ -34,11 +34,11 @@ public class AccountSpecifications {
 
     // USERPROFILE
     public static Specification<Account> userProfileFirstNameContains(String firstName) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.join("userProfile").get("firstName"), "%" + firstName + "%");
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.upper(root.join("userProfile").get("firstName")), "%" + firstName + "%");
     }
 
     public static Specification<Account> userProfileLastNameContains(String lastName) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.join("userProfile").get("lastName"), "%" + lastName + "%");
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.upper(root.join("userProfile").get("lastName")), "%" + lastName + "%");
     }
 
     public static Specification<Account> userProfileEmailContains(String email) {
@@ -48,7 +48,7 @@ public class AccountSpecifications {
     // ROLE
     public static Specification<Account> roleNameContains(String name) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                root.join("assignmentRoleList").get("role").get("name"), "%" + name + "%");
+                criteriaBuilder.upper(root.join("assignmentRoleList").get("role").get("name")), "%" + name + "%");
     }
 
     // OTROS

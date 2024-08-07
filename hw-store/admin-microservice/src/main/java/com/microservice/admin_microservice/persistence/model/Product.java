@@ -38,7 +38,7 @@ public class Product {
 
     @Column(name = "previous_price", nullable = false, precision = 20, scale = 2)
     @ColumnDefault("0.00")
-    private BigDecimal previous_price; // Precio anterior
+    private BigDecimal previousPrice; // Precio anterior
 
     @Column(name = "discount", precision = 20, scale = 2)
     @ColumnDefault("0.00")

@@ -72,8 +72,8 @@ public class AccountServiceImpl implements AccountService {
 
                 // Creation Profile
                 UserProfile userProfile = UserProfile.builder()
-                        .firstName(accountRegister.getFirstName())
-                        .lastName(accountRegister.getLastName())
+                        .firstName(accountRegister.getFirstname())
+                        .lastName(accountRegister.getLastname())
                         .email(accountRegister.getEmail())
                         .phoneNumber(accountRegister.getPhoneNumber())
                         .account(account)
@@ -109,11 +109,11 @@ public class AccountServiceImpl implements AccountService {
         Pageable pageable = PageRequest.of(paginateAndSortDTO.getPage(), paginateAndSortDTO.getSize(), sort);
         Specification<Account> specs = Specification.where(AccountSpecifications.isActive(true));
 
-        if (paginateAndSortDTO.getSearchValue() != null){
-            specs = specs.and(AccountSpecifications.usernameContains(paginateAndSortDTO.getSearchValue()))
-                    .or(AccountSpecifications.userProfileFirstNameContains(paginateAndSortDTO.getSearchValue()))
-                    .or(AccountSpecifications.userProfileLastNameContains(paginateAndSortDTO.getSearchValue()))
-                    .or(AccountSpecifications.roleNameContains(paginateAndSortDTO.getSearchValue()));
+        if (paginateAndSortDTO.getSearchValue() != null && !paginateAndSortDTO.getSearchValue().isEmpty()){
+            specs = specs.and(AccountSpecifications.usernameContains(paginateAndSortDTO.getSearchValue().toUpperCase()))
+                    .or(AccountSpecifications.userProfileFirstNameContains(paginateAndSortDTO.getSearchValue().toUpperCase()))
+                    .or(AccountSpecifications.userProfileLastNameContains(paginateAndSortDTO.getSearchValue().toUpperCase()))
+                    .or(AccountSpecifications.roleNameContains(paginateAndSortDTO.getSearchValue().toUpperCase()));
         }
 
         Page<Account> pageAccounts = accountRepository.getAllAccountsPaginateAndSort(specs, pageable);

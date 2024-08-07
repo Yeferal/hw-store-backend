@@ -23,10 +23,10 @@ public class AccountRegisterBodyDTO implements Serializable {
     Long roleId;
 
     @NotEmpty(message = "El campo firstname no puede ser vacio")
-    String firstName;
+    String firstname;
 
     @NotEmpty(message = "El campo lastname no puede ser vacio")
-    String lastName;
+    String lastname;
 
     String email;
     String phoneNumber;

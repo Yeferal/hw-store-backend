@@ -31,7 +31,7 @@ public class ProductBodyDTO implements Serializable {
     BigDecimal wholesalePrice;  // Precio al mayorista
 
     @NotNull(message = "El campo previous_price no puede ser Nulo")
-    BigDecimal previous_price;  // Precio anterior
+    BigDecimal previousPrice;  // Precio anterior
 
     BigDecimal discount;    // Descuento
 

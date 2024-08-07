@@ -4,6 +4,7 @@ import com.microservice.sales_microservice.domain.dto.SaleBodyDTO;
 import com.microservice.sales_microservice.domain.dto.SaleDTO;
 import com.microservice.sales_microservice.domain.dto.SaleProductBodyDTO;
 import com.microservice.sales_microservice.domain.map.SaleMapper;
+import com.microservice.sales_microservice.domain.repository.ProductRepository;
 import com.microservice.sales_microservice.domain.repository.SalesRepository;
 import com.microservice.sales_microservice.domain.service.SalesService;
 import com.microservice.sales_microservice.persistence.model.*;
@@ -26,6 +27,9 @@ import java.util.Optional;
 public class SalesServiceImpl implements SalesService {
     @Autowired
     private SalesRepository salesRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -57,7 +61,7 @@ public class SalesServiceImpl implements SalesService {
 
             Sale sale = Sale.builder()
                     .name(saleBodyDTO.getName())
-                    .address(saleBodyDTO.getAddress())
+                    .address((saleBodyDTO.getAddress()==null)? "Paqui, Totonicapan":saleBodyDTO.getAddress())
                     .phone(saleBodyDTO.getPhone())
                     .date(LocalDateTime.of(saleBodyDTO.getDate(), LocalTime.from(LocalDateTime.now())))
                     .total(calculateTotal(saleBodyDTO.getSaleProducts()))
@@ -165,11 +169,17 @@ public class SalesServiceImpl implements SalesService {
                     amountPile = amountEquivalent;
                 }
             }
+            // UPDATE STOCK
+            BigDecimal totalAmount = salesRepository.getAmountTotalStockPile(saleDetail.getProduct().getId());
+            productRepository.updateStock(saleDetail.getProduct().getId(), totalAmount);
         } else {
             // No hay en stock
             BigDecimal purchasePriceBase = assignmentMeasure.getProduct().getPurchasePrice();
             BigDecimal unitPriceBase = saleDetail.getUnitPrice().divide(assignmentMeasure.getEquivalentValue(), 2, RoundingMode.HALF_UP);
             generateFullSaleSubDetail(saleDetail, assignmentMeasure, amountEquivalent, purchasePriceBase, unitPriceBase);
+            // UPDATE STOCK
+            BigDecimal totalAmount = BigDecimal.ZERO;
+            productRepository.updateStock(saleDetail.getProduct().getId(), totalAmount);
         }
     }
 

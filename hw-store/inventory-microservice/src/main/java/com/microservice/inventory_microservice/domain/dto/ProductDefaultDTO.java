@@ -27,7 +27,7 @@ public class ProductDefaultDTO implements Serializable {
     String description;
     BigDecimal retailPrice;
     BigDecimal wholesalePrice;
-    BigDecimal previous_price;
+    BigDecimal previousPrice;
     BigDecimal discount;
     String discountType;
     BigDecimal amount;
