@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Value;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,4 +24,8 @@ public class SaleBodyDTO {
     String comment;
     @NotNull(message = "El campo saleProducts no puede ser Nulo")
     List<SaleProductBodyDTO> saleProducts;
+    @NotNull(message = "El campo pendingPayment no puede ser Nulo")
+    boolean pendingPayment;
+    @NotNull(message = "El campo payment no puede ser Nulo")
+    BigDecimal payment;
 }

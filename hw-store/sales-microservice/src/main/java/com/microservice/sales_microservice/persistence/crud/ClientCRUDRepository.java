@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface ClientCRUDRepository extends JpaRepository<Client, Long> {
   Optional<Client> findByNit(String nit);
+
+//  List<Client> findBy
 }
